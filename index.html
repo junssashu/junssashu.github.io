@@ -407,6 +407,57 @@
   }
 
   /* =====================================================================
+     GEEK MASCOT — a small character that rides a fixed rail down the page
+     as you scroll (its position tracks scroll %), leans into the scroll
+     direction, idles with a gentle float + antenna wiggle, blinks on its
+     own, and always looks at the cursor. Pure line-art, no gradients.
+     ===================================================================== */
+  .mascot-track{
+    position:fixed; right:14px; top:96px; bottom:120px; width:64px;
+    z-index:45; pointer-events:none;
+  }
+  @media (max-width:760px){ .mascot-track{ right:8px; width:48px; bottom:96px; } }
+  @media (max-width:520px){ .mascot-track{ display:none; } }
+
+  .mascot-pos{
+    position:absolute; left:50%; top:0;
+    transform:translate(-50%, 0) rotate(0deg);
+    transition:top .12s linear, transform .22s var(--smooth);
+    will-change:top, transform;
+  }
+  .mascot-bob{
+    animation:mascot-float 3.6s ease-in-out infinite;
+  }
+  @keyframes mascot-float{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-7px); }
+  }
+
+  .mascot-svg{ width:56px; height:64px; display:block; filter:drop-shadow(0 8px 16px rgba(0,0,0,0.28)); cursor:pointer; }
+  @media (max-width:760px){ .mascot-svg{ width:42px; height:48px; } }
+
+  .mascot-antenna{ transform-origin:32px 10px; animation:mascot-wiggle 2.6s ease-in-out infinite; }
+  @keyframes mascot-wiggle{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(6deg); } }
+
+  .mascot-pupil{ transition:transform .08s linear; }
+  .mascot-eye{ transform-origin:center; transition:transform .09s var(--smooth); }
+  .mascot-eye.blink{ transform:scaleY(0.08); }
+
+  .mascot-wave{ transform-origin:46px 40px; }
+  .mascot-svg:hover .mascot-wave{ animation:mascot-wave-swing .6s ease-in-out; }
+  @keyframes mascot-wave-swing{
+    0%,100%{ transform:rotate(0deg); }
+    30%{ transform:rotate(-24deg); }
+    60%{ transform:rotate(14deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .mascot-bob, .mascot-antenna{ animation:none !important; }
+    .mascot-pos{ transition:none !important; }
+    .mascot-svg:hover .mascot-wave{ animation:none !important; }
+  }
+
+  /* =====================================================================
      TERMINAL — always dark, independent of page theme (a terminal window)
      ===================================================================== */
   .terminal{
@@ -1117,6 +1168,47 @@
   </div>
 </footer>
 
+<!-- ============ GEEK MASCOT ============ -->
+<div class="mascot-track" id="mascotTrack" aria-hidden="true">
+  <div class="mascot-pos" id="mascotPos">
+    <div class="mascot-bob">
+      <svg class="mascot-svg" id="mascotSvg" viewBox="0 0 64 72" role="img" aria-label="A small animated mascot that watches the cursor">
+        <!-- waving hand (swings on hover) -->
+        <g class="mascot-wave">
+          <line x1="50" y1="52" x2="58" y2="43" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="58" cy="43" r="3.2" fill="var(--accent)"/>
+        </g>
+        <!-- body -->
+        <path d="M13 49 L51 49 L57 70 L7 70 Z" fill="var(--surface)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+        <!-- antenna -->
+        <g class="mascot-antenna">
+          <line x1="32" y1="9" x2="32" y2="1" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="32" cy="1" r="3" fill="var(--accent)"/>
+        </g>
+        <!-- head -->
+        <rect x="8" y="9" width="48" height="40" rx="16" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+        <!-- glasses temple arms -->
+        <line x1="14" y1="28" x2="7" y2="26" stroke="var(--accent)" stroke-width="1.6"/>
+        <line x1="50" y1="28" x2="57" y2="26" stroke="var(--accent)" stroke-width="1.6"/>
+        <!-- bridge -->
+        <line x1="30" y1="31" x2="34" y2="31" stroke="var(--accent)" stroke-width="2"/>
+        <!-- left lens + eye -->
+        <rect x="13" y="23" width="17" height="15" rx="6" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+        <g class="mascot-eye" id="mascotLeftEye" style="transform-origin:21.5px 30.5px;">
+          <circle id="mascotLeftPupil" class="mascot-pupil" cx="21.5" cy="30.5" r="3.1" fill="var(--accent)"/>
+        </g>
+        <!-- right lens + eye -->
+        <rect x="34" y="23" width="17" height="15" rx="6" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+        <g class="mascot-eye" id="mascotRightEye" style="transform-origin:42.5px 30.5px;">
+          <circle id="mascotRightPupil" class="mascot-pupil" cx="42.5" cy="30.5" r="3.1" fill="var(--accent)"/>
+        </g>
+        <!-- mouth -->
+        <path d="M25 43 Q32 47 39 43" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1139,9 +1231,14 @@
     var heroSection = document.querySelector('.hero');
     var timelineFill = document.getElementById('timelineFill');
     var timelineTrack = document.getElementById('experienceTimeline');
+    var mascotTrack = document.getElementById('mascotTrack');
+    var mascotPos = document.getElementById('mascotPos');
     var ticking = false;
+    var lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+    var mascotIdleTimer = null;
 
-    function clamp01(n){ return n < 0 ? 0 : n > 1 ? 1 : n; }
+    function clamp(n, lo, hi){ return n < lo ? lo : n > hi ? hi : n; }
+    function clamp01(n){ return clamp(n, 0, 1); }
 
     function onFrame(){
       ticking = false;
@@ -1173,6 +1270,21 @@
         var span = tr.height + vh * 0.4;
         var tProgress = clamp01((start - tr.top) / span);
         timelineFill.style.transform = 'scaleY(' + tProgress + ')';
+      }
+
+      /* mascot: rides down a fixed rail in lockstep with page scroll %,
+         and leans into whichever direction you're scrolling. */
+      if (mascotTrack && mascotPos){
+        var railH = mascotTrack.clientHeight - mascotPos.offsetHeight;
+        if (railH > 0) mascotPos.style.top = (pageProgress * railH) + 'px';
+        var velocity = scrollTop - lastScrollTop;
+        lastScrollTop = scrollTop;
+        var tilt = clamp(velocity * 0.6, -16, 16);
+        mascotPos.style.transform = 'translate(-50%,0) rotate(' + tilt + 'deg)';
+        clearTimeout(mascotIdleTimer);
+        mascotIdleTimer = setTimeout(function(){
+          mascotPos.style.transform = 'translate(-50%,0) rotate(0deg)';
+        }, 220);
       }
     }
 
@@ -1293,6 +1405,58 @@
     document.addEventListener('visibilitychange', function(){
       if (document.hidden) cancelAnimationFrame(raf); else { size(); tick(); }
     });
+  })();
+
+  /* ---- mascot: eyes follow the cursor, blinks on its own ---- */
+  (function(){
+    if (reduced) return;
+    var svg = document.getElementById('mascotSvg');
+    var leftEye = document.getElementById('mascotLeftEye');
+    var rightEye = document.getElementById('mascotRightEye');
+    var leftPupil = document.getElementById('mascotLeftPupil');
+    var rightPupil = document.getElementById('mascotRightPupil');
+    if (!svg || !leftPupil || !rightPupil) return;
+
+    var EYE_RANGE = 2.4; // px of pupil travel inside each lens
+
+    if (fine) {
+      var raf = null, targetX = 0, targetY = 0;
+      document.addEventListener('mousemove', function(e){
+        targetX = e.clientX; targetY = e.clientY;
+        if (raf) return;
+        raf = requestAnimationFrame(function(){
+          raf = null;
+          var r = svg.getBoundingClientRect();
+          if (!r.width) return;
+          var cx = r.left + r.width * 0.5;
+          var cy = r.top + r.height * 0.42;
+          var dx = targetX - cx, dy = targetY - cy;
+          var dist = Math.sqrt(dx*dx + dy*dy) || 1;
+          var ux = (dx / dist) * EYE_RANGE;
+          var uy = (dy / dist) * EYE_RANGE;
+          var ox = Math.max(-EYE_RANGE, Math.min(EYE_RANGE, ux));
+          var oy = Math.max(-EYE_RANGE, Math.min(EYE_RANGE, uy));
+          var t = 'translate(' + ox.toFixed(2) + 'px,' + oy.toFixed(2) + 'px)';
+          leftPupil.style.transform = t;
+          rightPupil.style.transform = t;
+        });
+      }, { passive:true });
+    }
+
+    /* independent, natural-feeling blink loop */
+    function scheduleBlink(){
+      var delay = 2600 + Math.random() * 3200;
+      setTimeout(function(){
+        if (leftEye) leftEye.classList.add('blink');
+        if (rightEye) rightEye.classList.add('blink');
+        setTimeout(function(){
+          if (leftEye) leftEye.classList.remove('blink');
+          if (rightEye) rightEye.classList.remove('blink');
+        }, 130);
+        scheduleBlink();
+      }, delay);
+    }
+    scheduleBlink();
   })();
 
   if (reduced || !fine) return; // skip cursor/magnetic flourishes
