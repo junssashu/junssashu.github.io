@@ -311,6 +311,36 @@
   .reg-ver{ font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); text-align:right; }
 
   /* =====================================================================
+     GITHUB FOOTPRINT — full repository index
+     ===================================================================== */
+  .gh-stats{ display:flex; flex-wrap:wrap; gap:14px; margin:8px 0 28px; }
+  .gh-stat{
+    border:1px solid var(--border); border-radius:var(--radius-s); background:var(--surface);
+    padding:14px 20px; min-width:132px;
+  }
+  .gh-stat .n{ font-family:var(--font-mono); font-size:22px; font-weight:600; color:var(--ink); line-height:1.1; }
+  .gh-stat .l{ font-size:11.5px; color:var(--ink-faint); margin-top:4px; letter-spacing:.03em; text-transform:uppercase; }
+  .gh-note{ color:var(--ink-soft); font-size:13.5px; max-width:64ch; margin:0 0 24px; }
+  .gh-note .key{ color:var(--ink); }
+  .repo-grid{ display:flex; flex-wrap:wrap; gap:8px; }
+  .repo-chip{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.01em;
+    padding:7px 12px; border-radius:999px; border:1px solid var(--border);
+    background:var(--surface); color:var(--ink-soft);
+    text-decoration:none; cursor:default;
+    transition:border-color .2s var(--smooth), color .2s var(--smooth), background .2s var(--smooth);
+  }
+  a.repo-chip.repo-chip-public{ cursor:pointer; color:var(--ink); }
+  a.repo-chip.repo-chip-public:hover{ border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+  .repo-chip-private{ opacity:.72; }
+  .repo-chip-lock{ font-size:10px; opacity:.7; }
+  .gh-legend{ display:flex; gap:22px; flex-wrap:wrap; margin-top:22px; font-size:12px; color:var(--ink-faint); }
+  .gh-legend span{ display:inline-flex; align-items:center; gap:7px; }
+  .gh-legend .dotp{ width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; }
+  .gh-legend .dots{ width:8px; height:8px; border-radius:50%; border:1px solid var(--ink-faint); display:inline-block; }
+
+  /* =====================================================================
      CONTACT + FOOTER
      ===================================================================== */
   .contact-big{ font-size:clamp(30px,5.2vw,64px); font-weight:700; letter-spacing:-0.02em; max-width:18ch; }
@@ -374,6 +404,7 @@
       <a href="#work" class="magnetic">Work</a>
       <a href="#skills" class="magnetic">Skills</a>
       <a href="#oss" class="magnetic">Open&nbsp;Source</a>
+      <a href="#footprint" class="magnetic">GitHub</a>
       <a href="#contact" class="magnetic">Contact</a>
     </nav>
     <button class="theme-toggle magnetic" id="themeToggle" type="button" aria-label="Toggle color theme">◐ theme</button>
@@ -820,10 +851,200 @@
     </div>
   </section>
 
+  <!-- ============ GITHUB FOOTPRINT ============ -->
+  <section id="footprint">
+    <div class="wrap">
+      <div class="eyebrow"><span class="num">06</span> GitHub Footprint <span class="rule"></span></div>
+      <h2 class="section-title reveal">166 repositories. Every one of them, mentioned.</h2>
+      <p class="section-lede reveal">Everything I've shipped, prototyped, or maintained on my personal GitHub — client platforms, internal tooling, packages, and experiments. Public repos link out; private client and proprietary work is named here for scope, not exposed.</p>
+
+      <div class="gh-stats reveal">
+        <div class="gh-stat"><div class="n">166</div><div class="l">Total repos</div></div>
+        <div class="gh-stat"><div class="n">11</div><div class="l">Public</div></div>
+        <div class="gh-stat"><div class="n">155</div><div class="l">Private client / proprietary</div></div>
+        <div class="gh-stat"><div class="n">Dart · TS · Py</div><div class="l">Primary languages</div></div>
+      </div>
+
+      <div class="repo-grid reveal">
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">academie_ci</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="PLpgSQL"><span class="repo-chip-name">agd</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-audit-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-auth</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-betslip-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-broadcast-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">agd-casino-engine</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">agd-casino-engines</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-casino-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">agd-casino-web</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-content-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-dashboard</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-live-board</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-packages</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-partner-web</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-policy-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-promo-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-provider-cosumer</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-retail-pos</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">agd-script-manager</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-support-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-support-web</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">agd-terminal-legacy</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">agd-terminal-provisioner</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-wallet-service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-web</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-web-booking-codes</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd-websocket-gateway</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">agd_terminal_web_app</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">agi_alliance</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">agri_connect</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">Android_dev</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">artistlinks</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">awao</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">backend-bibliotheques-solidaires</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dockerfile"><span class="repo-chip-name">bagisto-docker</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">batipilot</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">bed_and_travels</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/booster-week-api" target="_blank" rel="noopener" title="Python"><span class="repo-chip-name">booster-week-api</span></a>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">booster-week-web</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">booster_week</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">caf</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/caf--api" target="_blank" rel="noopener" title="Python"><span class="repo-chip-name">caf--api</span></a>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">call-history-package</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">call-signalin</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">callin-website</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">callserver-3rd-copy</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">carshub</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">casino-backend</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">casino-bet-lab</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="C#"><span class="repo-chip-name">casino-games</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">chap_livraison</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">city_pro</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">client-job-socket-server</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/Colab_Work" target="_blank" rel="noopener"><span class="repo-chip-name">Colab_Work</span></a>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">colorfol-artis</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">colorfol-landin</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">comot</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">conop</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">cravies</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">cravies-2</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">deepseek-engineer</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="C++"><span class="repo-chip-name">digit_recognition</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Shell"><span class="repo-chip-name">dongmo_house_manager</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">driverhub</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">edututor</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">eland</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">exagone_client</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">exagone_driver</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">file-monitorin</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">fluence</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/flutter_onnx_gen_ai" target="_blank" rel="noopener"><span class="repo-chip-name">flutter_onnx_gen_ai</span></a>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">fonnx-go</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/Food-App-project" target="_blank" rel="noopener" title="Java"><span class="repo-chip-name">Food-App-project</span></a>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">frontend-bibliotheque-solidaire</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/genius-w-vitrine" target="_blank" rel="noopener" title="TypeScript"><span class="repo-chip-name">genius-w-vitrine</span></a>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">goldeningkher</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got-asr</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got-call-manager</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got-context-manager</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got-conv-rebuilder</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got-cross-app</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got-encryptor</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got-gena</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got-inferencer</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Java"><span class="repo-chip-name">got-rtc</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got_genai_example</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">got_model_downloader_example</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">gotit-recommandation-trackin</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">gotit-script-gen</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">gotit_flutter</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">gotit_notif_app</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">house_digital_connect</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">house_manager</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">intime</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">invoice-temi-ap</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">invoice-temi-web-app</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">invoice_app_flutter</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">ITS</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">ivoir_topographie</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/ivoire-express" target="_blank" rel="noopener" title="TypeScript"><span class="repo-chip-name">ivoire-express</span></a>
+        <span class="repo-chip repo-chip-private" title="Java"><span class="repo-chip-name">Java-Projects</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">jopay</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">junssashu</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/junssashu.github.io" target="_blank" rel="noopener" title="HTML"><span class="repo-chip-name">junssashu.github.io</span></a>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">kone_transport</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">konect</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">langchain-gotit-a</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">lavoro</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/learn-coding-agent" target="_blank" rel="noopener"><span class="repo-chip-name">learn-coding-agent</span></a>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">library_app</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">library_app_react</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">library_app_react__juns</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">LiMeSt</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">livraison_pb</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">lk_service</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Jupyter Notebook"><span class="repo-chip-name">master</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">master1</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">masterI</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="MATLAB"><span class="repo-chip-name">matlab</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">mebala_app</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">mebala_back_2</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">model-downloader-package</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">model_inference_manager</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">natoni_express</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Lua"><span class="repo-chip-name">nvim</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">open_street_map_search_and_pick</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">osm_flutter</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">pdf-invoice-generator</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">pdf-invoice-generator-bolt</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">Pharma-Next_Gen</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">pilo</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">pilot-online</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/portefolio" target="_blank" rel="noopener" title="SCSS"><span class="repo-chip-name">portefolio</span></a>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">portfolio</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">premium-services-api</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">premium-services-mobile</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">premium-services-web-admin</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">price-validator</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">princy-s-cakes-showcase</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">python_projets</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="R"><span class="repo-chip-name">R</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">resto-express</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">resto-express-notifier</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Ruby"><span class="repo-chip-name">rev-call_in_c</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="HTML"><span class="repo-chip-name">sag_ci</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">sag_ci_admin</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">sales_tracker</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">spin2win</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">spin2win-online</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">sweb_admin</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">sweb_web</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">test_ollama</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <a class="repo-chip repo-chip-public" href="https://github.com/junssashu/Town_Hall_CMS" target="_blank" rel="noopener" title="PHP"><span class="repo-chip-name">Town_Hall_CMS</span></a>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">tripoli</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">troktout</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">tsc-rfq-partial-quotation</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">ultimate-macos-kvm</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">velocityy</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">volkeno</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">volkeno-online</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">wcl_editor</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">wcladmin</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">wclplay</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">wclPortal</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">whatsapp_call</span><span class="repo-chip-lock" aria-hidden="true">&#128274;</span></span>
+      </div>
+
+      <div class="gh-legend reveal">
+        <span><span class="dotp"></span> Public — click to open on GitHub</span>
+        <span><span class="dots"></span> Private — named for scope, code not exposed</span>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CONTACT ============ -->
   <section id="contact">
     <div class="wrap">
-      <div class="eyebrow"><span class="num">06</span> Contact <span class="rule"></span></div>
+      <div class="eyebrow"><span class="num">07</span> Contact <span class="rule"></span></div>
       <h2 class="contact-big reveal">Have a backend that needs someone who ships with AI, not just talks about it?</h2>
       <div class="hero-cta" style="margin-top:36px;">
         <a class="btn btn-primary magnetic" href="mailto:junssashu@gmail.com"><span class="btn-inner">junssashu@gmail.com</span></a>
@@ -846,6 +1067,7 @@
       <a href="#experience" class="magnetic">Experience</a>
       <a href="#work" class="magnetic">Work</a>
       <a href="#oss" class="magnetic">Open Source</a>
+      <a href="#footprint" class="magnetic">GitHub</a>
     </div>
   </div>
 </footer>
