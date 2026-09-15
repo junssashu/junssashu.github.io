@@ -435,21 +435,21 @@
     50%{ transform:translateY(-8px); }
   }
 
-  .mascot-svg{ width:74px; height:91px; display:block; filter:drop-shadow(0 8px 14px rgba(0,0,0,0.3)); cursor:pointer; position:relative; z-index:1; }
-  @media (max-width:1100px){ .mascot-svg{ width:62px; height:76px; } }
+  .mascot-svg{ width:98px; height:113px; display:block; filter:drop-shadow(0 9px 16px rgba(0,0,0,0.3)); cursor:pointer; position:relative; z-index:1; }
+  @media (max-width:1100px){ .mascot-svg{ width:78px; height:90px; } }
 
   .mascot-plate{
-    position:absolute; left:50%; top:50%; transform:translate(-50%,-52%);
-    width:88px; height:72px; border-radius:999px;
+    position:absolute; left:50%; top:46%; transform:translate(-50%,-52%);
+    width:118px; height:98px; border-radius:999px;
     background:var(--bg); opacity:0.5; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
     z-index:0; pointer-events:none;
   }
-  @media (max-width:1100px){ .mascot-plate{ width:74px; height:60px; } }
+  @media (max-width:1100px){ .mascot-plate{ width:98px; height:82px; } }
   @media (prefers-reduced-motion: reduce){ .mascot-plate{ backdrop-filter:none; -webkit-backdrop-filter:none; } }
 
-  .mascot-antenna{ transform-origin:70px 20px; animation:mascot-wiggle 2.6s ease-in-out infinite; }
+  .mascot-antenna{ transform-origin:80px 16px; animation:mascot-wiggle 2.6s ease-in-out infinite; }
   @keyframes mascot-wiggle{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(6deg); } }
-  .mascot-antenna-glow{ animation:antenna-pulse 2.2s ease-in-out infinite; transform-origin:70px 6px; }
+  .mascot-antenna-glow{ animation:antenna-pulse 2.2s ease-in-out infinite; transform-origin:80px 3px; }
   @keyframes antenna-pulse{ 0%,100%{ opacity:0.16; transform:scale(0.85); } 50%{ opacity:0.42; transform:scale(1.2); } }
   .mascot-chest-light{ animation:chest-blink 1.8s ease-in-out infinite; }
   @keyframes chest-blink{ 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
@@ -1213,75 +1213,72 @@
   </div>
 </footer>
 
-<!-- ============ GEEK MASCOT ============ -->
+<!-- ============ ASTRONAUT-CODER MASCOT ============ -->
 <div class="mascot-track" id="mascotTrack" aria-hidden="true">
   <div class="mascot-pos" id="mascotPos">
     <div class="mascot-plate"></div>
     <div class="mascot-bob">
-      <svg class="mascot-svg" id="mascotSvg" viewBox="0 0 140 172" role="img" aria-label="A small animated robot mascot that walks along the page and watches the cursor">
-        <!-- left leg -->
-        <g class="mascot-leg-l" style="transform-origin:48px 138px;">
-          <rect x="42" y="138" width="12" height="18" rx="6" fill="var(--accent-dim)"/>
-          <rect x="34" y="150" width="26" height="16" rx="8" fill="var(--accent-dim)"/>
+      <svg class="mascot-svg" id="mascotSvg" viewBox="0 0 160 184" role="img" aria-label="A small animated astronaut mascot coding on a laptop, floating along the page and watching the cursor">
+        <!-- left leg (bent, floating) -->
+        <g class="mascot-leg-l" style="transform-origin:62px 150px;">
+          <rect x="54" y="148" width="16" height="26" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="2" transform="rotate(20 62 150)"/>
+          <rect x="40" y="166" width="24" height="14" rx="7" fill="var(--accent-dim)"/>
         </g>
-        <!-- right leg -->
-        <g class="mascot-leg-r" style="transform-origin:92px 138px;">
-          <rect x="86" y="138" width="12" height="18" rx="6" fill="var(--accent-dim)"/>
-          <rect x="80" y="150" width="26" height="16" rx="8" fill="var(--accent-dim)"/>
+        <!-- right leg (bent, floating) -->
+        <g class="mascot-leg-r" style="transform-origin:98px 150px;">
+          <rect x="90" y="148" width="16" height="26" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="2" transform="rotate(-20 98 150)"/>
+          <rect x="96" y="166" width="24" height="14" rx="7" fill="var(--accent-dim)"/>
         </g>
-        <!-- left arm -->
-        <g class="mascot-arm-l" style="transform-origin:17px 115px;">
-          <rect x="8" y="96" width="18" height="38" rx="9" fill="var(--accent-dim)" transform="rotate(-10 17 115)"/>
-          <circle cx="15" cy="132" r="10" fill="var(--accent-dim)"/>
-          <circle cx="22" cy="126" r="3" fill="var(--accent)"/>
+        <!-- backpack side pods -->
+        <rect x="34" y="108" width="13" height="36" rx="6.5" fill="var(--accent-dim)"/>
+        <rect x="113" y="108" width="13" height="36" rx="6.5" fill="var(--accent-dim)"/>
+        <!-- left arm, reaching to the laptop -->
+        <g class="mascot-arm-l" style="transform-origin:42px 118px;">
+          <rect x="36" y="112" width="16" height="32" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="2" transform="rotate(-30 44 128)"/>
+          <circle cx="50" cy="148" r="9" fill="var(--accent-dim)"/>
         </g>
-        <!-- body -->
-        <rect x="26" y="84" width="88" height="64" rx="30" fill="var(--accent)"/>
-        <rect x="38" y="92" width="30" height="18" rx="9" fill="color-mix(in srgb, var(--accent) 55%, white)" opacity="0.3"/>
-        <rect x="86" y="84" width="28" height="64" rx="30" fill="var(--accent-dim)" opacity="0.22"/>
-        <!-- chest panel -->
-        <rect x="48" y="112" width="44" height="26" rx="10" fill="var(--bg)"/>
-        <circle cx="58" cy="125" r="3.5" fill="var(--accent)"/>
-        <circle cx="70" cy="125" r="3.5" fill="var(--accent-dim)" class="mascot-chest-light"/>
-        <circle cx="82" cy="125" r="3.5" fill="var(--ink-faint)"/>
-        <!-- right arm (waves on hover, idles otherwise) -->
-        <g class="mascot-wave" style="transform-origin:121px 115px;">
-          <rect x="112" y="96" width="18" height="38" rx="9" fill="var(--accent-dim)" transform="rotate(16 121 115)"/>
-          <circle cx="125" cy="134" r="10" fill="var(--accent-dim)"/>
-          <circle cx="118" cy="128" r="3" fill="var(--accent)"/>
+        <!-- suit torso -->
+        <rect x="44" y="100" width="72" height="56" rx="26" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="2.2"/>
+        <rect x="54" y="106" width="26" height="14" rx="7" fill="color-mix(in srgb, var(--surface) 40%, white)" opacity="0.4"/>
+        <!-- chest badge -->
+        <circle cx="80" cy="126" r="13" fill="var(--accent)"/>
+        <circle cx="80" cy="126" r="7" fill="var(--accent-dim)" class="mascot-chest-light"/>
+        <!-- right arm (waves on hover, idles otherwise), reaching to the laptop -->
+        <g class="mascot-wave" style="transform-origin:118px 118px;">
+          <rect x="108" y="112" width="16" height="32" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="2" transform="rotate(30 116 128)"/>
+          <circle cx="110" cy="148" r="9" fill="var(--accent-dim)"/>
         </g>
+        <!-- laptop -->
+        <g>
+          <rect x="50" y="148" width="60" height="11" rx="5.5" fill="var(--accent-dim)"/>
+          <rect x="54" y="111" width="52" height="35" rx="4" fill="var(--accent-dim)" transform="rotate(-6 80 129)"/>
+          <rect x="59" y="116" width="42" height="25" rx="2" fill="var(--bg)" transform="rotate(-6 80 129)"/>
+          <circle cx="80" cy="128.5" r="5.5" fill="#F4F4FA" transform="rotate(-6 80 129)"/>
+        </g>
+        <!-- neck seal -->
+        <rect x="68" y="98" width="24" height="10" rx="5" fill="var(--accent-dim)"/>
         <!-- antenna -->
         <g class="mascot-antenna">
-          <line x1="70" y1="20" x2="70" y2="6" stroke="var(--accent)" stroke-linecap="round" stroke-width="3.6"/>
-          <circle class="mascot-antenna-glow" cx="70" cy="6" r="10" fill="var(--accent)" opacity="0.2"/>
-          <circle cx="70" cy="6" r="5.5" fill="var(--accent)"/>
+          <line x1="80" y1="16" x2="80" y2="3" stroke="var(--accent)" stroke-linecap="round" stroke-width="3.4"/>
+          <circle class="mascot-antenna-glow" cx="80" cy="3" r="9" fill="var(--accent)" opacity="0.2"/>
+          <circle cx="80" cy="3" r="5" fill="var(--accent)"/>
         </g>
-        <!-- head -->
-        <rect x="16" y="18" width="108" height="76" rx="36" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="2.2"/>
-        <rect x="30" y="26" width="36" height="16" rx="8" fill="color-mix(in srgb, var(--surface) 40%, white)" opacity="0.4"/>
-        <!-- ears -->
-        <rect x="8" y="48" width="12" height="22" rx="6" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="2"/>
-        <rect x="120" y="48" width="12" height="22" rx="6" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="2"/>
+        <!-- helmet -->
+        <circle cx="80" cy="58" r="46" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="3"/>
         <!-- visor -->
-        <rect x="30" y="46" width="80" height="36" rx="18" fill="var(--bg)"/>
-        <!-- eyebrows -->
-        <path d="M42 44 Q54 36 66 44" fill="none" stroke="var(--ink-faint)" stroke-width="3" stroke-linecap="round"/>
-        <path d="M74 44 Q86 36 98 44" fill="none" stroke="var(--ink-faint)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="80" cy="60" r="34" fill="var(--bg)"/>
+        <!-- visor sheen -->
+        <ellipse cx="64" cy="44" rx="13" ry="8" fill="#FFFFFF" opacity="0.14" transform="rotate(-25 64 44)"/>
         <!-- left eye -->
-        <circle cx="54" cy="64" r="15" fill="#F4F4FA"/>
-        <g class="mascot-eye" id="mascotLeftEye" style="transform-origin:54px 64px;">
-          <circle id="mascotLeftPupil" class="mascot-pupil" cx="54" cy="64" r="7" fill="var(--accent)"/>
+        <circle cx="66" cy="60" r="14" fill="#F4F4FA"/>
+        <g class="mascot-eye" id="mascotLeftEye" style="transform-origin:66px 60px;">
+          <circle id="mascotLeftPupil" class="mascot-pupil" cx="66" cy="60" r="6.5" fill="var(--accent)"/>
         </g>
         <!-- right eye -->
-        <circle cx="86" cy="64" r="15" fill="#F4F4FA"/>
-        <g class="mascot-eye" id="mascotRightEye" style="transform-origin:86px 64px;">
-          <circle id="mascotRightPupil" class="mascot-pupil" cx="86" cy="64" r="7" fill="var(--accent)"/>
+        <circle cx="94" cy="60" r="14" fill="#F4F4FA"/>
+        <g class="mascot-eye" id="mascotRightEye" style="transform-origin:94px 60px;">
+          <circle id="mascotRightPupil" class="mascot-pupil" cx="94" cy="60" r="6.5" fill="var(--accent)"/>
         </g>
-        <!-- blush -->
-        <circle cx="40" cy="78" r="6" fill="var(--accent)" opacity="0.12"/>
-        <circle cx="100" cy="78" r="6" fill="var(--accent)" opacity="0.12"/>
-        <!-- mouth -->
-        <path d="M60 92 Q73 98 86 92" fill="none" stroke="var(--ink-faint)" stroke-width="3" stroke-linecap="round"/>
       </svg>
     </div>
   </div>
@@ -1523,7 +1520,7 @@
           var r = svg.getBoundingClientRect();
           if (!r.width) return;
           var cx = r.left + r.width * 0.5;
-          var cy = r.top + r.height * 0.37;
+          var cy = r.top + r.height * 0.33;
           var dx = targetX - cx, dy = targetY - cy;
           var dist = Math.sqrt(dx*dx + dy*dy) || 1;
           // the character mirrors (scaleX) to face its walking direction,
