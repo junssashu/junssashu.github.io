@@ -110,8 +110,18 @@
     font-family:var(--font-mono); font-size:11px; color:var(--ink-soft);
     background:var(--surface); border:1px solid var(--border); border-radius:999px;
     padding:7px 12px; cursor:pointer; transition:border-color .2s var(--smooth), color .2s var(--smooth);
+    display:inline-flex; align-items:center; gap:7px;
   }
   .theme-toggle:hover{ border-color:var(--accent); color:var(--accent); }
+  .theme-toggle svg{ width:13px; height:13px; display:block; flex-shrink:0; }
+  .theme-toggle .ti-moon{ display:block; }
+  .theme-toggle .ti-sun{ display:none; }
+  :root[data-theme="light"] .theme-toggle .ti-moon{ display:none; }
+  :root[data-theme="light"] .theme-toggle .ti-sun{ display:block; }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]) .theme-toggle .ti-moon{ display:none; }
+    :root:not([data-theme="dark"]) .theme-toggle .ti-sun{ display:block; }
+  }
 
   /* =====================================================================
      HERO
@@ -351,6 +361,7 @@
   .foot-links a:hover{ color:var(--ink); background:var(--surface-2); }
   .foot-note{ font-size:12.5px; color:var(--ink-faint); margin-top:14px; line-height:1.7; }
   .foot-note a{ color:var(--accent); text-decoration:none; }
+  .foot-copyright{ font-size:11.5px; color:var(--ink-faint); margin-top:28px; padding-top:20px; border-top:1px solid var(--border); }
 
   /* =====================================================================
      SCROLL REVEAL — JS (IntersectionObserver) driven, so it behaves the
@@ -547,7 +558,11 @@
       <a href="#footprint" class="magnetic">GitHub</a>
       <a href="#contact" class="magnetic">Contact</a>
     </nav>
-    <button class="theme-toggle magnetic" id="themeToggle" type="button" aria-label="Toggle color theme">◐ theme</button>
+    <button class="theme-toggle magnetic" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="ti-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="ti-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      <span>Theme</span>
+    </button>
   </div>
 </header>
 
@@ -1211,6 +1226,9 @@
       <a href="#footprint" class="magnetic">GitHub</a>
     </div>
   </div>
+  <div class="wrap">
+    <div class="foot-copyright">&copy; <span id="copyrightYear">2026</span> Sasha Junior Tsamo. All rights reserved.</div>
+  </div>
 </footer>
 
 <!-- ============ ASTRONAUT-CODER MASCOT ============ -->
@@ -1443,6 +1461,10 @@
       root.setAttribute('data-theme', next);
     });
   }
+
+  /* ---- footer copyright year ---- */
+  var copyrightYear = document.getElementById('copyrightYear');
+  if (copyrightYear) copyrightYear.textContent = String(new Date().getFullYear());
 
   /* ---- ambient node field (canvas, no libraries) ---- */
   (function(){
