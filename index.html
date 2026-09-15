@@ -1183,7 +1183,9 @@
     window.addEventListener('scroll', onScroll, { passive:true });
     window.addEventListener('resize', onScroll);
 
-    /* ---- staggered reveal + case-diagram line-draw, via IntersectionObserver ---- */
+    /* ---- staggered reveal + case-diagram line-draw, via IntersectionObserver ----
+       Bidirectional: elements reverse out exactly as they came in, whichever
+       way you scroll — toggling .in-view on every crossing, not just the first. */
     var revealEls = document.querySelectorAll('.reveal');
     // group siblings by parent so entries in the same block stagger together
     var gidCounter = 0, gidMap = new WeakMap();
@@ -1193,34 +1195,33 @@
       if (!gidMap.has(parent)) gidMap.set(parent, 'g' + (gidCounter++));
       el.__gid = gidMap.get(parent);
     });
-    var seen = {};
+    var orderCounter = {}; // stable index-in-group per element, assigned once, reused for delay both ways
+    revealEls.forEach(function(el){
+      var gid = el.__gid || 'g0';
+      orderCounter[gid] = orderCounter[gid] || 0;
+      el.__ord = orderCounter[gid]++;
+    });
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
-        if (!entry.isIntersecting) return;
         var el = entry.target;
-        var gid = el.__gid || 'g0';
-        seen[gid] = (seen[gid] || 0);
-        var delay = Math.min(seen[gid] * 0.06, 0.42);
-        seen[gid]++;
-        el.style.setProperty('--rd', delay + 's');
-        el.classList.add('in-view');
-        io.unobserve(el);
+        var delay = Math.min((el.__ord || 0) * 0.06, 0.42);
+        el.style.setProperty('--rd', entry.isIntersecting ? delay + 's' : '0s');
+        el.classList.toggle('in-view', entry.isIntersecting);
       });
     }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
     revealEls.forEach(function(el){ io.observe(el); });
 
     var diagrams = document.querySelectorAll('.case-diagram');
+    diagrams.forEach(function(el){
+      el.querySelectorAll('.draw-line').forEach(function(line){
+        var len = line.getTotalLength ? line.getTotalLength() : 200;
+        line.style.setProperty('--len', len + 'px');
+      });
+    });
     var dio = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
-        if (!entry.isIntersecting) return;
         var el = entry.target;
-        el.querySelectorAll('.draw-line').forEach(function(line){
-          var len = line.getTotalLength ? line.getTotalLength() : 200;
-          line.style.setProperty('--len', len + 'px');
-        });
-        // next frame so the initial dasharray/dashoffset paints before transitioning
-        requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('in-view'); }); });
-        dio.unobserve(el);
+        el.classList.toggle('in-view', entry.isIntersecting);
       });
     }, { threshold:0.35 });
     diagrams.forEach(function(el){ dio.observe(el); });
