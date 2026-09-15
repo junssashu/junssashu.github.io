@@ -458,6 +458,26 @@
   }
 
   /* =====================================================================
+     MECHANICAL SCROLL SOUND — a small toggle that turns on a synthesized
+     gear-ratchet tick timed to scroll distance (Web Audio, no audio files).
+     Off by default; the button is the user-gesture that unlocks audio.
+     ===================================================================== */
+  .sound-toggle{
+    position:fixed; left:18px; bottom:18px; z-index:46;
+    width:44px; height:44px; border-radius:999px;
+    background:var(--surface); border:1px solid var(--border, rgba(255,255,255,0.12));
+    color:var(--fg, #EAEAF2); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform .18s var(--smooth), border-color .18s var(--smooth);
+  }
+  .sound-toggle:hover{ transform:translateY(-2px); border-color:var(--accent); }
+  .sound-toggle:active{ transform:translateY(0) scale(0.94); }
+  .sound-toggle svg{ width:20px; height:20px; display:block; }
+  .sound-toggle .st-on{ display:none; }
+  .sound-toggle[aria-pressed="true"] .st-off{ display:none; }
+  .sound-toggle[aria-pressed="true"] .st-on{ display:block; }
+  @media (max-width:520px){ .sound-toggle{ left:12px; bottom:12px; width:40px; height:40px; } }
+
+  /* =====================================================================
      TERMINAL — always dark, independent of page theme (a terminal window)
      ===================================================================== */
   .terminal{
@@ -1209,6 +1229,16 @@
   </div>
 </div>
 
+<!-- ============ SCROLL SOUND TOGGLE ============ -->
+<button type="button" class="sound-toggle" id="soundToggle" aria-pressed="false" aria-label="Turn on mechanical scroll sound">
+  <svg class="st-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5 6 9H3v6h3l5 4V5Z"/><line x1="16" y1="9" x2="21" y2="15"/><line x1="21" y1="9" x2="16" y2="15"/>
+  </svg>
+  <svg class="st-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18 6a8.5 8.5 0 0 1 0 12"/>
+  </svg>
+</button>
+
 <script>
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1457,6 +1487,117 @@
       }, delay);
     }
     scheduleBlink();
+  })();
+
+  /* =====================================================================
+     MECHANICAL SCROLL SOUND — synthesized gear-ratchet ticks via Web
+     Audio, spaced by scroll distance (not time) so it feels like teeth
+     passing a pawl. No audio files, nothing autoplays: off until the
+     visitor opts in, which also supplies the user-gesture browsers
+     require before audio can play.
+     ===================================================================== */
+  (function(){
+    var toggle = document.getElementById('soundToggle');
+    if (!toggle) return;
+
+    var STORE_KEY = 'jbwc-scroll-sound';
+    var ctx = null, masterGain = null, noiseBuffer = null;
+    var enabled = false;
+    try { enabled = window.localStorage.getItem(STORE_KEY) === 'on'; } catch (e) {}
+
+    function setUI(){
+      toggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+      toggle.setAttribute('aria-label', enabled ? 'Turn off mechanical scroll sound' : 'Turn on mechanical scroll sound');
+    }
+    setUI();
+
+    function ensureAudio(){
+      if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      ctx = new AC();
+      masterGain = ctx.createGain();
+      masterGain.gain.value = 0.5;
+      masterGain.connect(ctx.destination);
+      // one shared noise buffer, reused for every tick's "ratchet" texture
+      var len = Math.floor(ctx.sampleRate * 0.06);
+      noiseBuffer = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = noiseBuffer.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    }
+
+    function playTick(strength, pitchDir){
+      if (!enabled || !ctx || ctx.state !== 'running') return;
+      var now = ctx.currentTime;
+      var jitter = (Math.random() - 0.5) * 24;
+      var baseFreq = 190 + jitter + (pitchDir > 0 ? 14 : -14);
+      var vol = Math.min(0.22, 0.07 + strength * 0.16);
+
+      // mechanical "clack" — short square-wave burst, fast decay
+      var osc = ctx.createOscillator();
+      var oscGain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(baseFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(60, baseFreq * 0.6), now + 0.045);
+      oscGain.gain.setValueAtTime(vol, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+      osc.connect(oscGain).connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 0.06);
+
+      // ratchet texture — filtered noise burst layered on top
+      if (noiseBuffer){
+        var src = ctx.createBufferSource();
+        src.buffer = noiseBuffer;
+        var filt = ctx.createBiquadFilter();
+        filt.type = 'bandpass';
+        filt.frequency.value = 2200 + jitter * 8;
+        filt.Q.value = 1.1;
+        var nGain = ctx.createGain();
+        nGain.gain.setValueAtTime(vol * 0.55, now);
+        nGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+        src.connect(filt).connect(nGain).connect(masterGain);
+        src.start(now);
+        src.stop(now + 0.04);
+      }
+    }
+
+    var TOOTH = 42; // px of scroll per gear "tooth"
+    var acc = 0;
+    var lastY = window.scrollY || document.documentElement.scrollTop;
+    var sTicking = false;
+
+    function onSoundFrame(){
+      sTicking = false;
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var dy = y - lastY;
+      lastY = y;
+      if (!enabled || !dy) { acc = 0; return; }
+      acc += Math.abs(dy);
+      var dir = dy > 0 ? 1 : -1;
+      var strength = Math.min(1, Math.abs(dy) / 120);
+      var teeth = Math.min(4, Math.floor(acc / TOOTH));
+      for (var t = 0; t < teeth; t++){
+        (function(delayMs){ setTimeout(function(){ playTick(strength, dir); }, delayMs); })(t * 11);
+      }
+      if (teeth > 0) acc -= teeth * TOOTH;
+    }
+
+    window.addEventListener('scroll', function(){
+      if (!enabled) return;
+      if (!sTicking){ sTicking = true; requestAnimationFrame(onSoundFrame); }
+    }, { passive:true });
+
+    toggle.addEventListener('click', function(){
+      enabled = !enabled;
+      setUI();
+      try { window.localStorage.setItem(STORE_KEY, enabled ? 'on' : 'off'); } catch (e) {}
+      if (enabled){
+        ensureAudio();
+        acc = 0;
+        lastY = window.scrollY || document.documentElement.scrollTop;
+      }
+    });
   })();
 
   if (reduced || !fine) return; // skip cursor/magnetic flourishes
