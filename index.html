@@ -540,10 +540,6 @@
   .gh-more-head{ font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:14px; }
   .gh-more-head a{ color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft-2); }
   .gh-more-head a:hover{ border-color:var(--accent); }
-  .gitlab-row{ display:block; text-decoration:none; }
-  .gitlab-row h4{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
-  .gitlab-row .ext{ opacity:.45; transition:transform .3s var(--spring), opacity .2s var(--smooth); flex-shrink:0; }
-  .gitlab-row:hover .ext{ opacity:1; transform:translateX(3px); }
 
   /* =====================================================================
      CONTACT + FOOTER
@@ -1609,17 +1605,43 @@
 
       <div class="gh-more reveal">
         <div class="gh-more-head">Also on GitLab — <a href="https://gitlab.com/junssashu" target="_blank" rel="noopener">gitlab.com/junssashu</a></div>
-        <div class="more-grid">
-          <a class="mrow gitlab-row" href="https://gitlab.com/junssashu/cravies" target="_blank" rel="noopener">
-            <h4>CRAVIES <span class="ext">&rarr;</span></h4>
-            <p>Premium cereal-subscription concept app — mobile-first, atomic design system.</p>
-            <div class="stack"><span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">Vite</span></div>
-          </a>
-          <a class="mrow gitlab-row" href="https://gitlab.com/junssashu/masteri" target="_blank" rel="noopener">
-            <h4>masterI <span class="ext">&rarr;</span></h4>
-            <p>Data-mining &amp; risk-analysis coursework — exploratory modeling in a Jupyter notebook.</p>
-            <div class="stack"><span class="tag">Python</span><span class="tag">Jupyter</span></div>
-          </a>
+        <div class="gh-stats" style="margin-bottom:20px;">
+          <div class="gh-stat"><div class="n">26</div><div class="l">Total repos</div></div>
+          <div class="gh-stat"><div class="n">2</div><div class="l">Public</div></div>
+          <div class="gh-stat"><div class="n">24</div><div class="l">Private client / coursework</div></div>
+          <div class="gh-stat"><div class="n">Py · JS · Dart</div><div class="l">Primary languages</div></div>
+        </div>
+        <div class="repo-grid">
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">2021-2022</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="C"><span class="repo-chip-name">assistance_l1</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <a class="repo-chip repo-chip-public" href="https://gitlab.com/junssashu/cravies" target="_blank" rel="noopener" title="TSX"><span class="repo-chip-name">cravies</span></a>
+        <span class="repo-chip repo-chip-private" title="Shell"><span class="repo-chip-name">deployment-guides-for-bibliotheque-solidaire</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">elasticsearch</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">file-storage-system</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">go2i/go2i-cross</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Kotlin"><span class="repo-chip-name">gotit-native-call</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">gotit_call_demo</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">invoice-temi-api</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="TSX"><span class="repo-chip-name">invoice-temi-web-app</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <a class="repo-chip repo-chip-public" href="https://gitlab.com/junssashu/masteri" target="_blank" rel="noopener" title="Python"><span class="repo-chip-name">masteri</span></a>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">mebala</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">mebala/mebala-backend</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Vue"><span class="repo-chip-name">mebala/mebala-business</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">mebala/mebala-store</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Shell"><span class="repo-chip-name">mebala/mebala_app</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Dart"><span class="repo-chip-name">mebala_app</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">mebala_back</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">mebala_back_2</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="Python"><span class="repo-chip-name">projet-python</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">server_hotel_mongodb</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="JavaScript"><span class="repo-chip-name">teamown/ownbackend/oismakiteapi</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private"><span class="repo-chip-name">world-conquest-library/ebook-shop-app</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="TSX"><span class="repo-chip-name">world-conquest-library/web-site</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        <span class="repo-chip repo-chip-private" title="TypeScript"><span class="repo-chip-name">world-conquest-library/web-site-backend</span><span class="repo-chip-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg></span></span>
+        </div>
+        <div class="gh-legend" style="margin-top:20px;">
+          <span><span class="dotp"></span> Public — click to open on GitLab</span>
+          <span><span class="dots"></span> Private — named for scope, code not exposed</span>
         </div>
       </div>
     </div>
