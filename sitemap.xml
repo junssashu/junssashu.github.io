@@ -7,6 +7,11 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
+      <image:loc>https://junssashu.github.io/assets/profile-photo.jpg</image:loc>
+      <image:title>Sasha Tsamo headshot</image:title>
+      <image:caption>Sasha Junior Tsamo (Juns Sashu), Backend &amp; AI Developer</image:caption>
+    </image:image>
+    <image:image>
       <image:loc>https://junssashu.github.io/og-image.png</image:loc>
       <image:title>Sasha Tsamo — Backend &amp; AI Developer</image:title>
       <image:caption>Sasha Junior Tsamo (Juns Sashu), Backend &amp; AI Developer — portfolio preview card</image:caption>
