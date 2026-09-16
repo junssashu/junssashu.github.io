@@ -534,6 +534,17 @@
   .gh-legend .dotp{ width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; }
   .gh-legend .dots{ width:8px; height:8px; border-radius:50%; border:1px solid var(--ink-faint); display:inline-block; }
 
+  /* small "also elsewhere" addendum — same grid language as More Builds,
+     scaled down for a two-item list rather than a full footprint */
+  .gh-more{ margin-top:40px; padding-top:32px; border-top:1px solid var(--border); }
+  .gh-more-head{ font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:14px; }
+  .gh-more-head a{ color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft-2); }
+  .gh-more-head a:hover{ border-color:var(--accent); }
+  .gitlab-row{ display:block; text-decoration:none; }
+  .gitlab-row h4{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .gitlab-row .ext{ opacity:.45; transition:transform .3s var(--spring), opacity .2s var(--smooth); flex-shrink:0; }
+  .gitlab-row:hover .ext{ opacity:1; transform:translateX(3px); }
+
   /* =====================================================================
      CONTACT + FOOTER
      ===================================================================== */
@@ -1594,6 +1605,22 @@
       <div class="gh-legend reveal">
         <span><span class="dotp"></span> Public — click to open on GitHub</span>
         <span><span class="dots"></span> Private — named for scope, code not exposed</span>
+      </div>
+
+      <div class="gh-more reveal">
+        <div class="gh-more-head">Also on GitLab — <a href="https://gitlab.com/junssashu" target="_blank" rel="noopener">gitlab.com/junssashu</a></div>
+        <div class="more-grid">
+          <a class="mrow gitlab-row" href="https://gitlab.com/junssashu/cravies" target="_blank" rel="noopener">
+            <h4>CRAVIES <span class="ext">&rarr;</span></h4>
+            <p>Premium cereal-subscription concept app — mobile-first, atomic design system.</p>
+            <div class="stack"><span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">Vite</span></div>
+          </a>
+          <a class="mrow gitlab-row" href="https://gitlab.com/junssashu/masteri" target="_blank" rel="noopener">
+            <h4>masterI <span class="ext">&rarr;</span></h4>
+            <p>Data-mining &amp; risk-analysis coursework — exploratory modeling in a Jupyter notebook.</p>
+            <div class="stack"><span class="tag">Python</span><span class="tag">Jupyter</span></div>
+          </a>
+        </div>
       </div>
     </div>
   </section>
