@@ -398,7 +398,15 @@
     transition-delay:var(--rd,0s);
   }
   .reveal.in-view{ opacity:1; transform:translateY(0); filter:blur(0); }
-  .js-scroll .reveal{ /* only hide-before-reveal once JS confirms it can reveal them */ }
+  /* Engine mode: once the rAF scroll engine is live it writes opacity/transform
+     every frame from the element's own scroll position, so CSS transitions must
+     step aside — otherwise the two smoothers fight and the result lags. The
+     engine's own damping is what makes it glide, in both directions. */
+  .engine-on .reveal{ transition:none; filter:none; will-change:opacity, transform; }
+  /* the engine writes these every frame; a CSS transition on top would be a
+     second smoother fighting the first, which reads as lag */
+  .engine-on .mascot-pos{ transition:none; }
+  .engine-on .case-diagram svg .draw-line{ transition:none; }
   .no-js .reveal, .reduced-motion .reveal{ opacity:1; transform:none; filter:none; transition:none; }
 
   /* =====================================================================
@@ -434,11 +442,111 @@
   .hero-rail{ will-change:transform, opacity; }
   #fieldCanvas{ will-change:transform, opacity; }
 
+  /* =====================================================================
+     ATMOSPHERE — three fixed depth layers behind everything: a fine dot
+     lattice, flat accent discs that drift at their own parallax rates, and
+     a film-grain veil. All flat fills at low opacity (no gradients), so it
+     reads as depth and texture rather than decoration.
+     ===================================================================== */
+  .atmos{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+    contain:strict;
+  }
+  /* inset only needs to exceed the layer's parallax travel (~±20px), so it
+     stays small — a larger layer is a larger raster for no visible gain */
+  .atmos-grid{
+    position:absolute; inset:-5% -2%;
+    opacity:0.40; will-change:transform;
+  }
+  .atmos-grid svg{ width:100%; height:100%; display:block; }
+  .atmos-grid circle{ fill:var(--ink-faint); }
+
+  .atmos-orb{
+    position:absolute; border-radius:50%; will-change:transform;
+    border:1px solid var(--accent); opacity:0.10;
+  }
+  .atmos-orb.filled{ background:var(--accent); border:none; opacity:0.055; }
+  /* the accent is far denser against a light ground — the same alpha that
+     reads as a hint on #0A0A0F becomes a lavender wash on #F5F5FB */
+  :root[data-theme="light"] .atmos-orb.filled{ opacity:0.022; }
+  :root[data-theme="light"] .atmos-orb{ opacity:0.06; }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]) .atmos-orb.filled{ opacity:0.022; }
+    :root:not([data-theme="dark"]) .atmos-orb{ opacity:0.06; }
+  }
+  .orb-1{ width:460px; height:460px; top:4%;  left:-9%; }
+  .orb-2{ width:300px; height:300px; top:38%; right:-6%; }
+  .orb-3{ width:620px; height:620px; top:68%; left:12%; }
+  .orb-4{ width:190px; height:190px; top:22%; right:22%; }
+  /* On phones the dot lattice and grain are close to invisible anyway, and
+     the compositing they cost is felt most on exactly those GPUs — so the
+     atmosphere thins out to just two drifting discs. */
+  @media (max-width:760px){
+    .orb-1{ width:260px; height:260px; } .orb-2{ width:180px; height:180px; }
+    .orb-3{ width:320px; height:320px; } .orb-4{ display:none; }
+    .atmos-grid, .atmos-grain{ display:none; }
+    .aura{ filter:blur(30px); }
+  }
+
+  /* Grain is a pre-rendered 72px tile rather than a live SVG turbulence
+     filter behind a blend mode. Measured: the filter+blend version cost
+     ~15ms a frame (it re-composited the full viewport every frame); this
+     rasterises once and tiles, for effectively nothing. */
+  .atmos-grain{
+    position:absolute; inset:0; opacity:0.055;
+    background-image:url("data:image/png;base64,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");
+    background-repeat:repeat; background-size:72px 72px;
+  }
+  :root[data-theme="light"] .atmos-grain{ opacity:0.035; }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]) .atmos-grain{ opacity:0.035; }
+  }
+
+  /* page content sits above the atmosphere */
+  header.nav, main, footer, .mascot-track, .sound-toggle, .scroll-progress{ position:relative; z-index:1; }
+  header.nav{ z-index:40; }
+  .mascot-track{ z-index:45; }
+  .sound-toggle{ z-index:46; }
+  .scroll-progress{ z-index:60; }
+
+  /* =====================================================================
+     SECTION AURA — a flat disc that swells behind each section heading as
+     the section moves through the viewport, then recedes on the way out.
+     Driven per-frame from scroll position, so it reverses exactly.
+     ===================================================================== */
+  .aura{
+    position:absolute; left:-70px; top:-90px; width:300px; height:300px;
+    border-radius:50%; background:var(--accent); opacity:0;
+    filter:blur(38px); pointer-events:none; z-index:0;
+    transform:scale(.6); will-change:transform, opacity;
+  }
+  @media (max-width:760px){ .aura{ width:190px; height:190px; left:-50px; top:-60px; filter:blur(34px); } }
+  section .wrap{ position:relative; z-index:1; }
+
+  /* =====================================================================
+     SECTION RULE — a hairline between sections that draws itself across as
+     you approach it and retracts as you leave.
+     ===================================================================== */
+  .sec-rule{
+    height:1px; background:var(--border-strong); transform:scaleX(0);
+    transform-origin:left center; will-change:transform;
+  }
+
+  /* =====================================================================
+     DEPTH — cards and rows lift slightly toward the viewport centre, so
+     the page has a subtle sense of a camera moving through it.
+     ===================================================================== */
+  .depth{ will-change:transform; }
+
   @media (prefers-reduced-motion: reduce){
     .reveal{ opacity:1 !important; transform:none !important; filter:none !important; transition:none !important; }
     .scroll-progress{ display:none; }
     .timeline-fill{ transform:scaleY(1) !important; }
     .case-diagram svg .draw-line{ stroke-dashoffset:0 !important; transition:none !important; }
+    .atmos-orb, .atmos-grid{ transform:none !important; }
+    .aura{ opacity:0.06 !important; transform:scale(1) !important; }
+    .sec-rule{ transform:scaleX(1) !important; }
+    .depth{ transform:none !important; }
   }
 
   /* =====================================================================
@@ -571,6 +679,28 @@
 
 <noscript><style>.reveal{opacity:1!important;transform:none!important;filter:none!important;}.timeline-fill{transform:scaleY(1)!important;}.case-diagram svg .draw-line{stroke-dashoffset:0!important;}</style></noscript>
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- ============ ATMOSPHERE: fixed depth layers, parallaxed per frame ============ -->
+<div class="atmos" id="atmos" aria-hidden="true">
+  <div class="atmos-grid" id="atmosGrid" data-par="0.055">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <defs>
+        <pattern id="dotLattice" x="0" y="0" width="34" height="34" patternUnits="userSpaceOnUse">
+          <circle cx="1.4" cy="1.4" r="1.4"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dotLattice)"/>
+    </svg>
+  </div>
+
+  <div class="atmos-orb filled orb-1" data-par="0.16"></div>
+  <div class="atmos-orb orb-2"        data-par="0.30"></div>
+  <div class="atmos-orb filled orb-3" data-par="0.09"></div>
+  <div class="atmos-orb orb-4"        data-par="0.42"></div>
+
+  <div class="atmos-grain"></div>
+</div>
+
 <header class="nav">
   <div class="wrap nav-inner">
     <span class="brand-word">Sasha <b>Tsamo</b></span>
@@ -652,6 +782,7 @@
 
   <!-- ============ EXPERIENCE ============ -->
   <section id="experience">
+    <div class="aura" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eyebrow"><span class="num">01</span> Experience <span class="rule"></span></div>
       <h2 class="section-title reveal">Where the work below actually happened.</h2>
@@ -733,7 +864,10 @@
   </section>
 
   <!-- ============ SKILLS ============ -->
+  <div class="wrap"><div class="sec-rule" aria-hidden="true"></div></div>
+
   <section id="skills">
+    <div class="aura" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eyebrow"><span class="num">02</span> Skills <span class="rule"></span></div>
       <h2 class="section-title reveal">What I actually build with, ranked by production traffic.</h2>
@@ -768,7 +902,10 @@
   </section>
 
   <!-- ============ WORK (index / accordion) ============ -->
+  <div class="wrap"><div class="sec-rule" aria-hidden="true"></div></div>
+
   <section id="work">
+    <div class="aura" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eyebrow"><span class="num">03</span> Selected Work <span class="rule"></span></div>
       <h2 class="section-title reveal">Ten platforms. One thing in common: I owned them past the demo.</h2>
@@ -1016,7 +1153,10 @@
   </section>
 
   <!-- ============ OPEN SOURCE ============ -->
+  <div class="wrap"><div class="sec-rule" aria-hidden="true"></div></div>
+
   <section id="oss">
+    <div class="aura" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eyebrow"><span class="num">05</span> Open Source <span class="rule"></span></div>
       <h2 class="section-title reveal">Ten packages, published so other apps didn't have to rebuild this.</h2>
@@ -1036,7 +1176,10 @@
   </section>
 
   <!-- ============ GITHUB FOOTPRINT ============ -->
+  <div class="wrap"><div class="sec-rule" aria-hidden="true"></div></div>
+
   <section id="footprint">
+    <div class="aura" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eyebrow"><span class="num">06</span> GitHub Footprint <span class="rule"></span></div>
       <h2 class="section-title reveal">166 repositories. Every one of them, mentioned.</h2>
@@ -1226,7 +1369,10 @@
   </section>
 
   <!-- ============ CONTACT ============ -->
+  <div class="wrap"><div class="sec-rule" aria-hidden="true"></div></div>
+
   <section id="contact">
+    <div class="aura" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eyebrow"><span class="num">07</span> Contact <span class="rule"></span></div>
       <h2 class="contact-big reveal">Have a backend that needs someone who ships with AI, not just talks about it?</h2>
@@ -1348,132 +1494,342 @@
   var mascotFacing = 1; // 1 = facing right, -1 = mirrored to face left; shared with eye-tracking below
 
   /* =====================================================================
-     SCROLL-DRIVEN ANIMATION SYSTEM — Apple-style: a top progress hairline,
-     a staggered IntersectionObserver reveal, hero parallax, a self-filling
-     experience timeline, and case-diagram connectors that trace themselves
-     in. Everything reads scroll once per frame via rAF (no scroll-jank),
-     and is fully skipped under prefers-reduced-motion.
+     SCROLL ENGINE — one continuous rAF loop, one smoothed scroll value,
+     every effect a pure function of that value.
+
+     Why it is built this way:
+     · A damped `smoothY` chases the real scroll position, so motion keeps
+       easing for a few frames after the wheel stops instead of freezing
+       mid-gesture. That settle is most of what "smooth" actually means.
+     · Nothing is a class toggle at a threshold. Each element's state is
+       computed from where it sits relative to the viewport, so scrolling
+       up runs precisely the same curve backwards — reveals un-reveal at
+       the same rate they revealed, with no pop at a crossing point.
+     · Layout is measured once (and on resize) via offsetTop/offsetHeight,
+       which ignore transforms, so the loop never reads geometry back from
+       elements it is animating — no layout thrash, no feedback drift.
+     · The loop parks itself when everything has settled and wakes on the
+       next scroll, so an idle page costs nothing.
+     Fully skipped under prefers-reduced-motion.
      ===================================================================== */
   (function(){
     if (reduced) return;
 
-    var progress = document.getElementById('scrollProgress');
-    var heroRail = document.querySelector('.hero-rail');
+    var docEl = document.documentElement;
+    docEl.classList.add('engine-on');
+
+    var progress    = document.getElementById('scrollProgress');
+    var heroRail    = document.querySelector('.hero-rail');
     var fieldCanvas = document.getElementById('fieldCanvas');
     var heroSection = document.querySelector('.hero');
-    var timelineFill = document.getElementById('timelineFill');
+    var timelineFill  = document.getElementById('timelineFill');
     var timelineTrack = document.getElementById('experienceTimeline');
     var mascotTrack = document.getElementById('mascotTrack');
-    var mascotPos = document.getElementById('mascotPos');
-    var ticking = false;
-    var lastScrollTop = window.scrollY || document.documentElement.scrollTop;
-    var mascotIdleTimer = null;
+    var mascotPos   = document.getElementById('mascotPos');
 
     function clamp(n, lo, hi){ return n < lo ? lo : n > hi ? hi : n; }
     function clamp01(n){ return clamp(n, 0, 1); }
+    function easeOutCubic(t){ var u = 1 - t; return 1 - u * u * u; }
+    function easeInOutCubic(t){
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
 
-    function onFrame(){
-      ticking = false;
-      var doc = document.documentElement;
-      var scrollTop = window.scrollY || doc.scrollTop;
-      var maxScroll = (doc.scrollHeight - window.innerHeight) || 1;
-      var pageProgress = clamp01(scrollTop / maxScroll);
+    /* offsetTop chain — layout position, unaffected by any transform we
+       may already have written onto the element or its ancestors. */
+    function docTop(el){
+      var t = 0, n = el;
+      while (n){ t += n.offsetTop || 0; n = n.offsetParent; }
+      return t;
+    }
+
+    /* ---------------------------------------------------------------
+       Collect targets
+       --------------------------------------------------------------- */
+    var revealItems = [];
+    (function(){
+      var els = document.querySelectorAll('.reveal');
+      var gidCounter = 0, gidMap = new WeakMap(), orderCounter = {};
+      els.forEach(function(el){
+        var parent = el.parentElement;
+        var gid = 'g0';
+        if (parent){
+          if (!gidMap.has(parent)) gidMap.set(parent, 'g' + (gidCounter++));
+          gid = gidMap.get(parent);
+        }
+        orderCounter[gid] = orderCounter[gid] || 0;
+        revealItems.push({
+          el: el,
+          ord: orderCounter[gid]++,
+          top: 0, h: 0, last: -1, blurred: false
+        });
+      });
+    })();
+
+    /* fixed atmosphere layers — parallaxed against page progress rather
+       than raw scroll, so travel stays bounded and their edges never
+       wander into frame however long the page is. */
+    var parItems = [];
+    document.querySelectorAll('[data-par]').forEach(function(el){
+      var speed = parseFloat(el.getAttribute('data-par')) || 0;
+      parItems.push({ el: el, speed: speed, spin: el.classList.contains('atmos-orb') && !el.classList.contains('filled'), last: -999 });
+    });
+
+    var auraItems = [];
+    document.querySelectorAll('.aura').forEach(function(el){
+      auraItems.push({ el: el, sec: el.parentElement, top: 0, h: 0, last: -1 });
+    });
+
+    var ruleItems = [];
+    document.querySelectorAll('.sec-rule').forEach(function(el){
+      ruleItems.push({ el: el, top: 0, last: -1 });
+    });
+
+    var lineItems = [];
+    document.querySelectorAll('.case-diagram').forEach(function(fig){
+      var lines = fig.querySelectorAll('.draw-line');
+      if (!lines.length) return;
+      var set = [];
+      lines.forEach(function(line){
+        var len = line.getTotalLength ? line.getTotalLength() : 200;
+        line.style.strokeDasharray = len + 'px';
+        set.push({ node: line, len: len });
+      });
+      lineItems.push({ fig: fig, lines: set, top: 0, h: 0, last: -1 });
+    });
+
+    /* ---------------------------------------------------------------
+       Measure (once, then on resize / font load / details toggle)
+       --------------------------------------------------------------- */
+    var vh = window.innerHeight;
+    var maxScroll = 1;
+
+    function measure(){
+      vh = window.innerHeight;
+      maxScroll = (docEl.scrollHeight - vh) || 1;
+      var i;
+      for (i = 0; i < revealItems.length; i++){
+        revealItems[i].top = docTop(revealItems[i].el);
+        revealItems[i].h   = revealItems[i].el.offsetHeight;
+      }
+      for (i = 0; i < auraItems.length; i++){
+        var a = auraItems[i];
+        a.top = a.sec ? docTop(a.sec) : 0;
+        a.h   = a.sec ? a.sec.offsetHeight : 1;
+      }
+      for (i = 0; i < ruleItems.length; i++){
+        ruleItems[i].top = docTop(ruleItems[i].el);
+      }
+      for (i = 0; i < lineItems.length; i++){
+        lineItems[i].top = docTop(lineItems[i].fig);
+        lineItems[i].h   = lineItems[i].fig.offsetHeight;
+      }
+    }
+
+    /* ---------------------------------------------------------------
+       State
+       --------------------------------------------------------------- */
+    var targetY = window.scrollY || docEl.scrollTop;
+    var smoothY = targetY;
+    var mascotX = 0, mascotXTarget = 0;
+    var mascotFacingLocal = 1;
+    var tilt = 0;
+    var running = false;
+    var settleFrames = 0;
+
+    function render(){
+      var pageProgress = clamp01(smoothY / maxScroll);
+      var vel = targetY - smoothY;          /* signed velocity proxy */
+
       if (progress) progress.style.transform = 'scaleX(' + pageProgress + ')';
 
-      /* hero: fade + drift + gentle scale-down as it scrolls away, like
-         Apple's hero sections collapsing into the page. */
+      /* ---- hero: drifts back and dims as the page lifts over it ---- */
       if (heroSection && heroRail){
-        var hr = heroSection.getBoundingClientRect();
-        var heroProgress = clamp01(-hr.top / (hr.height * 0.75 || 1));
-        heroRail.style.transform = 'translateY(' + (heroProgress * 60) + 'px) scale(' + (1 - heroProgress * 0.05) + ')';
-        heroRail.style.opacity = String(1 - heroProgress * 1.1);
+        var heroH = heroSection.offsetHeight || 1;
+        var hp = clamp01(smoothY / (heroH * 0.75));
+        heroRail.style.transform = 'translate3d(0,' + (hp * 64) + 'px,0) scale(' + (1 - hp * 0.05) + ')';
+        heroRail.style.opacity = String(clamp01(1 - hp * 1.1));
         if (fieldCanvas){
-          fieldCanvas.style.transform = 'translateY(' + (heroProgress * 26) + 'px)';
-          fieldCanvas.style.opacity = String(1 - heroProgress * 0.9);
+          fieldCanvas.style.transform = 'translate3d(0,' + (hp * 30) + 'px,0)';
+          fieldCanvas.style.opacity = String(clamp01(1 - hp * 0.9));
         }
       }
 
-      /* experience timeline: the spine fills solid as the section scrolls
-         through the viewport — a literal progress "timeline". */
+      /* ---- atmosphere parallax: bounded travel, per-layer rate ---- */
+      for (var p = 0; p < parItems.length; p++){
+        var pi = parItems[p];
+        var shift = (pageProgress - 0.5) * pi.speed * 700;
+        if (Math.abs(shift - pi.last) < 0.12) continue;
+        pi.last = shift;
+        pi.el.style.transform = pi.spin
+          ? 'translate3d(0,' + shift.toFixed(2) + 'px,0) rotate(' + (pageProgress * 42).toFixed(2) + 'deg)'
+          : 'translate3d(0,' + shift.toFixed(2) + 'px,0)';
+      }
+
+      /* ---- reveals: opacity/translate straight off scroll position ----
+         `start` is where in the viewport an element begins resolving and
+         `span` how far it travels doing so; subtracting ord*14 staggers
+         siblings without ever detaching them from scroll position, which
+         is what keeps the reverse pass identical to the forward one. */
+      var start = vh * 0.90;
+      var span  = vh * 0.34;
+      for (var i = 0; i < revealItems.length; i++){
+        var it = revealItems[i];
+        var rel = it.top - smoothY;
+        /* cheap reject: far below the fold, or long gone above it */
+        if (rel > vh * 1.4){
+          if (it.last !== 0){ it.last = 0; it.el.style.opacity = '0'; it.el.style.transform = 'translate3d(0,28px,0)'; if (it.blurred){ it.el.style.filter = ''; it.blurred = false; } }
+          continue;
+        }
+        if (rel + it.h < -vh * 0.6){
+          if (it.last !== 1){ it.last = 1; it.el.style.opacity = '1'; it.el.style.transform = 'none'; if (it.blurred){ it.el.style.filter = ''; it.blurred = false; } }
+          continue;
+        }
+        var e = easeOutCubic(clamp01((start - rel - it.ord * 14) / span));
+        if (Math.abs(e - it.last) < 0.0035) continue;
+        it.last = e;
+        var y = (1 - e) * 28;
+        /* a touch of parallax inside the reveal itself: elements nearer
+           the viewport centre settle a hair further forward, which reads
+           as depth rather than as a flat slide-up. */
+        var depth = (1 - e) * 0.012;
+        it.el.style.opacity = e.toFixed(3);
+        it.el.style.transform = e >= 0.999 ? 'none'
+          : 'translate3d(0,' + y.toFixed(2) + 'px,0) scale(' + (1 - depth).toFixed(4) + ')';
+        /* blur only while actually in motion — a handful of elements at
+           any moment, never the whole page */
+        if (e > 0.012 && e < 0.985){
+          it.el.style.filter = 'blur(' + ((1 - e) * 3.4).toFixed(2) + 'px)';
+          it.blurred = true;
+        } else if (it.blurred){
+          it.el.style.filter = '';
+          it.blurred = false;
+        }
+      }
+
+      /* ---- section auras: swell as a section takes the viewport ---- */
+      for (var a2 = 0; a2 < auraItems.length; a2++){
+        var au = auraItems[a2];
+        var secCentre = au.top + au.h * 0.5 - smoothY;
+        var d = Math.abs(secCentre - vh * 0.5) / (vh * 0.9 + au.h * 0.5);
+        var ap = clamp01(1 - d);
+        if (Math.abs(ap - au.last) < 0.004) continue;
+        au.last = ap;
+        var ae = easeInOutCubic(ap);
+        au.el.style.opacity = (ae * 0.17).toFixed(3);
+        au.el.style.transform = 'scale(' + (0.6 + ae * 0.6).toFixed(3) + ')';
+      }
+
+      /* ---- section rules: draw across on approach, retract on the way back ---- */
+      for (var r = 0; r < ruleItems.length; r++){
+        var ru = ruleItems[r];
+        var rrel = ru.top - smoothY;
+        var rp = easeOutCubic(clamp01((vh * 0.95 - rrel) / (vh * 0.3)));
+        if (Math.abs(rp - ru.last) < 0.004) continue;
+        ru.last = rp;
+        ru.el.style.transform = 'scaleX(' + rp.toFixed(3) + ')';
+      }
+
+      /* ---- experience spine fills with the section ---- */
       if (timelineFill && timelineTrack){
-        var tr = timelineTrack.getBoundingClientRect();
-        var vh = window.innerHeight;
-        var start = vh * 0.82;
-        var span = tr.height + vh * 0.4;
-        var tProgress = clamp01((start - tr.top) / span);
-        timelineFill.style.transform = 'scaleY(' + tProgress + ')';
+        var tTop = docTop(timelineTrack);
+        var tH = timelineTrack.offsetHeight || 1;
+        var tp = clamp01((vh * 0.82 - (tTop - smoothY)) / (tH + vh * 0.4));
+        timelineFill.style.transform = 'scaleY(' + tp.toFixed(4) + ')';
       }
 
-      /* mascot: walks left-to-right along the top of the page in lockstep
-         with page scroll % — a literal "user journey" marker — easing to
-         catch up rather than snapping, and turning to face the direction
-         it's currently walking. */
+      /* ---- diagram connectors trace/untrace with scroll ---- */
+      for (var L = 0; L < lineItems.length; L++){
+        var li = lineItems[L];
+        var lrel = li.top - smoothY;
+        if (lrel > vh * 1.3 || lrel + li.h < -vh * 0.4) continue;
+        var lp = easeOutCubic(clamp01((vh * 0.85 - lrel) / (vh * 0.42)));
+        if (Math.abs(lp - li.last) < 0.005) continue;
+        li.last = lp;
+        for (var n = 0; n < li.lines.length; n++){
+          li.lines[n].node.style.strokeDashoffset = (li.lines[n].len * (1 - lp)).toFixed(2) + 'px';
+        }
+      }
+
+      /* ---- mascot: trails the page with its own slower spring ---- */
       if (mascotTrack && mascotPos){
-        var margin = 9; // % inset from each edge so it never reaches offscreen
-        var leftPct = margin + pageProgress * (100 - margin * 2);
-        mascotPos.style.left = leftPct + '%';
-        var velocity = scrollTop - lastScrollTop;
-        lastScrollTop = scrollTop;
-        if (velocity > 1.5) mascotFacing = 1;
-        else if (velocity < -1.5) mascotFacing = -1;
-        var tilt = clamp(velocity * 0.22, -6, 6);
-        mascotPos.style.transform = 'translate(-50%,0) rotate(' + tilt + 'deg) scaleX(' + mascotFacing + ')';
-        clearTimeout(mascotIdleTimer);
-        mascotIdleTimer = setTimeout(function(){
-          mascotPos.style.transform = 'translate(-50%,0) rotate(0deg) scaleX(' + mascotFacing + ')';
-        }, 260);
+        var margin = 9;
+        mascotXTarget = margin + pageProgress * (100 - margin * 2);
+        mascotX += (mascotXTarget - mascotX) * 0.075;
+        if (vel > 1.2) mascotFacingLocal = 1;
+        else if (vel < -1.2) mascotFacingLocal = -1;
+        mascotFacing = mascotFacingLocal;
+        tilt += (clamp(vel * 0.16, -7, 7) - tilt) * 0.12;
+        mascotPos.style.left = mascotX.toFixed(3) + '%';
+        mascotPos.style.transform =
+          'translate(-50%,0) rotate(' + tilt.toFixed(2) + 'deg) scaleX(' + mascotFacingLocal + ')';
       }
     }
 
-    function onScroll(){
-      if (!ticking){ ticking = true; requestAnimationFrame(onFrame); }
+    /* ---------------------------------------------------------------
+       Loop — damped chase, parks itself once everything has settled
+       --------------------------------------------------------------- */
+    function frame(){
+      targetY = window.scrollY || docEl.scrollTop;
+      var diff = targetY - smoothY;
+      /* Adaptive damping. 0.15 under normal scrolling is what carries the
+         ease-out after a gesture ends; but a large jump (an anchor link, a
+         scrollbar drag, Home/End) would take most of a second to close at
+         that rate and feel like the page was wading. So the factor scales
+         with the size of the gap: small gaps stay silky, big ones snap
+         shut. Capped so it never becomes a hard cut. */
+      var damp = 0.15 + Math.min(0.45, Math.abs(diff) / 1400);
+      smoothY += diff * damp;
+
+      var mascotRest = !mascotPos || Math.abs(mascotXTarget - mascotX) < 0.01;
+      var settled = Math.abs(diff) < 0.06 && mascotRest && Math.abs(tilt) < 0.05;
+
+      if (settled){
+        smoothY = targetY;
+        tilt = 0;
+        if (mascotPos) mascotX = mascotXTarget;
+        settleFrames++;
+      } else {
+        settleFrames = 0;
+      }
+
+      render();
+
+      if (settleFrames > 2){ running = false; return; }
+      requestAnimationFrame(frame);
     }
-    onFrame();
-    window.addEventListener('scroll', onScroll, { passive:true });
-    window.addEventListener('resize', onScroll);
 
-    /* ---- staggered reveal + case-diagram line-draw, via IntersectionObserver ----
-       Bidirectional: elements reverse out exactly as they came in, whichever
-       way you scroll — toggling .in-view on every crossing, not just the first. */
-    var revealEls = document.querySelectorAll('.reveal');
-    // group siblings by parent so entries in the same block stagger together
-    var gidCounter = 0, gidMap = new WeakMap();
-    revealEls.forEach(function(el){
-      var parent = el.parentElement;
-      if (!parent) { el.__gid = 'g0'; return; }
-      if (!gidMap.has(parent)) gidMap.set(parent, 'g' + (gidCounter++));
-      el.__gid = gidMap.get(parent);
-    });
-    var orderCounter = {}; // stable index-in-group per element, assigned once, reused for delay both ways
-    revealEls.forEach(function(el){
-      var gid = el.__gid || 'g0';
-      orderCounter[gid] = orderCounter[gid] || 0;
-      el.__ord = orderCounter[gid]++;
-    });
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        var el = entry.target;
-        var delay = Math.min((el.__ord || 0) * 0.06, 0.42);
-        el.style.setProperty('--rd', entry.isIntersecting ? delay + 's' : '0s');
-        el.classList.toggle('in-view', entry.isIntersecting);
-      });
-    }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
-    revealEls.forEach(function(el){ io.observe(el); });
+    function wake(){
+      if (running) return;
+      running = true;
+      settleFrames = 0;
+      requestAnimationFrame(frame);
+    }
 
-    var diagrams = document.querySelectorAll('.case-diagram');
-    diagrams.forEach(function(el){
-      el.querySelectorAll('.draw-line').forEach(function(line){
-        var len = line.getTotalLength ? line.getTotalLength() : 200;
-        line.style.setProperty('--len', len + 'px');
+    /* ---------------------------------------------------------------
+       Wiring
+       --------------------------------------------------------------- */
+    measure();
+    mascotX = mascotXTarget = 9 + clamp01(smoothY / maxScroll) * 82;
+    render();
+    wake();
+
+    window.addEventListener('scroll', wake, { passive:true });
+    window.addEventListener('resize', function(){ measure(); wake(); });
+    window.addEventListener('orientationchange', function(){ measure(); wake(); });
+
+    /* the accordions change page height when opened — remeasure so every
+       element below them keeps animating against its true position */
+    document.querySelectorAll('details.irow').forEach(function(d){
+      d.addEventListener('toggle', function(){
+        measure(); wake();
+        setTimeout(function(){ measure(); wake(); }, 420);
       });
     });
-    var dio = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        var el = entry.target;
-        el.classList.toggle('in-view', entry.isIntersecting);
-      });
-    }, { threshold:0.35 });
-    diagrams.forEach(function(el){ dio.observe(el); });
+
+    if (document.fonts && document.fonts.ready){
+      document.fonts.ready.then(function(){ measure(); wake(); });
+    }
+    window.addEventListener('load', function(){ measure(); wake(); });
   })();
 
   /* ---- theme toggle ---- */
