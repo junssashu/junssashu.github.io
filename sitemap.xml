@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://junssashu.github.io/</loc>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://junssashu.github.io/og-image.png</image:loc>
+      <image:title>Sasha Tsamo — Backend &amp; AI Developer</image:title>
+      <image:caption>Sasha Junior Tsamo (Juns Sashu), Backend &amp; AI Developer — portfolio preview card</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://junssashu.github.io/assets/mascot-head.png</image:loc>
+      <image:title>Sasha Tsamo mascot</image:title>
+      <image:caption>Portfolio mascot of Sasha Junior Tsamo (junssashu) — 3D robot head, electric blue</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://junssashu.github.io/assets/hero-droid.png</image:loc>
+      <image:title>Sasha Tsamo portfolio mascot (full body)</image:title>
+      <image:caption>The 3D robot mascot of Sasha Junior Tsamo's portfolio, junssashu.github.io</image:caption>
+    </image:image>
+  </url>
+</urlset>
