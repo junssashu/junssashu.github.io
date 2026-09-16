@@ -629,6 +629,14 @@
   .cv-note{ margin-top:18px; font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em; color:var(--ink-faint); }
   .cv-note a{ color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--border-strong); }
   .cv-note a:hover{ color:var(--accent); border-color:var(--accent); }
+
+  /* ---- email toast (mailto fallback) ---- */
+  .toast{ position:fixed; left:50%; bottom:28px; transform:translate(-50%, 16px); z-index:120; display:flex; align-items:center; gap:14px; padding:12px 16px 12px 18px; background:var(--surface-2); color:var(--ink); border:1px solid var(--border-strong); border-radius:999px; box-shadow:0 24px 48px -20px rgba(0,0,0,.6); font-family:var(--font-mono); font-size:12.5px; letter-spacing:.02em; opacity:0; pointer-events:none; transition:opacity .3s var(--smooth), transform .4s var(--spring); max-width:calc(100vw - 32px); }
+  .toast.show{ opacity:1; transform:translate(-50%,0); pointer-events:auto; }
+  .toast .ok{ width:7px; height:7px; border-radius:50%; background:#3DDC84; flex:none; }
+  .toast a{ color:var(--accent); text-decoration:none; font-weight:600; white-space:nowrap; }
+  .toast a:hover{ text-decoration:underline; }
+  @media (max-width:520px){ .toast{ flex-wrap:wrap; border-radius:16px; justify-content:center; text-align:center; } }
   .contact-big{ font-size:clamp(30px,5.2vw,64px); font-weight:700; letter-spacing:-0.02em; max-width:18ch; }
   footer{ padding-block:56px; border-top:1px solid var(--border); }
   .foot-grid{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; }
@@ -1798,7 +1806,8 @@
       <h2 class="contact-big reveal">Have a backend that needs someone who ships with AI, not just talks about it?</h2>
       <div class="hero-cta" style="margin-top:36px;">
         <a class="btn btn-primary magnetic" href="mailto:junssashu@gmail.com"><span class="btn-inner">junssashu@gmail.com</span></a>
-        <a class="btn btn-ghost magnetic" href="https://www.linkedin.com/in/sashajunior" target="_blank" rel="noopener"><span class="btn-inner">linkedin.com/in/sashajunior</span></a>
+        <a class="btn btn-ghost magnetic" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=junssashu%40gmail.com&amp;su=Hello%20Sasha" target="_blank" rel="noopener"><span class="btn-inner">Write in Gmail <span class="arr">&rarr;</span></span></a>
+        <a class="btn btn-ghost magnetic" href="https://www.linkedin.com/in/sashajunior" target="_blank" rel="noopener me"><span class="btn-inner">linkedin.com/in/sashajunior</span></a>
         <a class="btn btn-ghost magnetic" href="tel:+237657278710"><span class="btn-inner">+237 657 27 87 10</span></a>
       </div>
     </div>
@@ -1828,6 +1837,8 @@
     </div>
   </div>
 </footer>
+
+<div class="toast" id="mailToast" role="status" aria-live="polite"></div>
 
 <!-- ============ 3D MASCOT (CC0 RobotExpressive, pre-rendered sprite) ============ -->
 <div class="mascot-track" id="mascotTrack" aria-hidden="true">
@@ -1923,6 +1934,29 @@
           dl.save({ filename: a.getAttribute('download'), data: new Blob([bytes]) }).catch(function(){});
         }, true);
       }).catch(function(){});
+    })();
+    /* mailto: fallback — a mailto link does nothing when no mail app is set up
+       (or inside a sandboxed embed). Copy the address and offer Gmail. */
+    (function(){
+      var toast = document.getElementById('mailToast'), timer = null;
+      var EMAIL = 'junssashu@gmail.com';
+      var GMAIL = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(EMAIL) + '&su=' + encodeURIComponent('Hello Sasha');
+      function show(copied){
+        toast.innerHTML = '<span class="ok"></span><span>' + (copied ? EMAIL + ' copied to clipboard' : EMAIL) + '</span>' +
+          '<a href="' + GMAIL + '" target="_blank" rel="noopener">Open in Gmail &rarr;</a>';
+        toast.classList.add('show');
+        clearTimeout(timer);
+        timer = setTimeout(function(){ toast.classList.remove('show'); }, 7000);
+      }
+      document.addEventListener('click', function(ev){
+        var a = ev.target && ev.target.closest ? ev.target.closest('a[href^="mailto:"]') : null;
+        if (!a) return;
+        var done = function(ok){ show(ok); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(EMAIL).then(function(){ done(true); }, function(){ done(false); });
+        } else { done(false); }
+        /* let the mailto itself proceed for people who do have a mail app */
+      });
     })();
     var mascotSay = document.getElementById('mascotSay');
     var waving = false, waveFrame = 0, waveClock = 0, wavedAtContact = false;
